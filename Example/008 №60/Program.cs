@@ -1,63 +1,51 @@
-﻿// // Задача 60.Сформируйте трёхмерный массив из неповторяющихся двузначных чисел.
-// //  Напишите программу, которая будет построчно выводить массив, добавляя индексы каждого элемента.
+﻿void ShowArray (int [,] array){
+    for(int i=0; i < array.GetLength(0); i++){
+      for(int j=0; j < array.GetLength(1); j++)
+        Console.Write($"{array[i, j]}  ");
+      Console.Write("\n");
+    }
+}
 
-// Console.Clear();
-// Console.Write("Введите размеры массива через пробел: ");
-// string[] nums = Console.ReadLine().Split("", StringSplitOptions.RemoveEmptyEntries);
-// int[,,] array = GetArray(new int[] {int.Parse(nums[0]), int.Parse(nums [1]), int.Parse(nums [2]), }, 10, 99);
-// PrintArray(array);
+void FillArray (int [,] array){
 
-// int[,,] GetArray (int[] sizes, int min, int max)
-// {
-//     int[,,] result = new int [sizes[0], sizes [1], sizes [2]];
-//     for ( i = 0; i< result.GetLength(0); i++)
-//     {
-//         for ( j = 0; j < result.GetLength(1); j++)
-//         {
-//         int k = 0;
-//         while (k < result.GetLength(2))
-        
-//          {
-//             int element = new Random().Next(min, max + 1);
-//             if (FindElement (result,element)) continue;
-//             result [i, j, k] = element;
-//             k++;
-//          }
-//         }
-//     }
-// }    
-// return result;
+  for (int i=0; i < array.GetLength(0); i++)
+    for (int j=0; j < array.GetLength(1); j++)
+      array[i, j] = new Random().Next(-50, 50);
+}
 
+void SortRow (int [,] array) {
 
-// bool FindElement (int[,,] array, int el)
-// {
-//    for ( int i = 0; i < array.GetLength(0); i++)
-//    {
-//     for ( j = 0; j < array.GetLength(1); j++)
-//     {
-//         for ( k = 0; k < array.GetLength(2); k++)
-//         {
-//             if (array[i, j, k] == el) return true;
-//         }
-//     }
-//    }
-//    return false;
-// }
+  int min = 0;
+  int count = 0;
+
+  for(int i=0; i < array.GetLength(0); i++){
+
+    min = array[i, 0];
+    count = 0;
+
+    for (int j=0; j < array.GetLength(1); j++){
+      if (min < array[i, j]){
+        array[i, j-1] = array[i, j];
+        array[i, j] = min;
+        count++;
+      }
+      else
+        min = array[i, j];
+
+      if(count != 0 & j+1 == array.GetLength(1)){
+        count = 0;
+        j = 0;
+        min = array[i, 0];
+      }
+    }
+  }
+}
 
 
-// void PrintArray(int[,,] array)
-// {
-//     for ( int i = 0; i < array.GetLength(0); i++)
-//     {
-//         for ( j = 0; j < array.GetLength(1); j++)
-//         {
-//             for ( int k = 0; k < array.GetLength(2); k++)
-//             {
-//               Console.WriteLine($"{array[i, j, k]} ({i}, {j}, {k})  ");
-//             }
-//             Console.WriteLine();
-//         }
-//          Console.WriteLine();
-//     }
-// }
+int [,] array = new int [7, 7];
+FillArray(array);
+ShowArray(array);
 
+Console.WriteLine();
+SortRow(array);
+ShowArray(array);
